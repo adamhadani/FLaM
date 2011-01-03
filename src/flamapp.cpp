@@ -14,12 +14,7 @@
 
 #include <cxxtools/arg.h>
 
-#include "lineiterator.h"
-#include "tokenstream.h"
-
-#define MIN(X,Y) ((X) < (Y) ? : (X) : (Y))
 #define MAX_BUF_SZ 1024
-
 
 using std::string;
 using std::vector;
