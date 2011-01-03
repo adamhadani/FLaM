@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <vector>
 #include <map>
 
 #include <cxxtools/arg.h>
@@ -20,6 +21,7 @@
 
 
 using std::string;
+using std::vector;
 using std::cout;
 using std::endl;
 
@@ -29,7 +31,7 @@ using cxxtools::Arg;
 //using flam::ngram_iterator;
 
 
-class FLaMApp 
+class FLaMApp
 {
   public:
 	enum TaskTypes { tBuildVocabulary, tBuildNGrams };
@@ -42,29 +44,62 @@ class FLaMApp
 	int buildVocabulary(const char* input_fname, const char* output_fname);
 };
 
-int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int min_N, int max_N) 
+int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int min_N, int max_N)
 {
 	FILE *infile=NULL, *outfile=NULL;
 	if ( !strcmp(input_fname, "-") ) {
 		infile = stdin;
-	} 
+	}
 	else {
 		infile = fopen(input_fname, "r");
 	}
 	if ( !strcmp(output_fname, "-") ) {
 		outfile = stdout;
 	}
-	else { 
+	else {
 		outfile = fopen(output_fname, "w");
 	}
 
+    int i,j,N,pos;
 	char buf[MAX_BUF_SZ];
+	char *tok = NULL;
+	std::vector<std::string> tokens;
+    std::string ngram;
+
+	// For each line
 	while ( fgets(buf, MAX_BUF_SZ, infile) != NULL ) {
-		// tokenize and generate all n-grams
+	    // strip newline
+        char *nlptr = strchr(buf, '\n');
+        if (nlptr) *nlptr = '\0';
+
+	    tokens.clear();
+
+		// tokenize
+		tok = strtok(buf, " ");
+		while ( tok != NULL ) {
+		    tokens.push_back(tok);
+
+            tok = strtok(NULL, " ");
+		}
+
+		// Emit all N-Grams of order (min_N, max_N)
+		N=tokens.size();
+        for (i=min_N; i<max_N+1; ++i) {
+            for (pos=0; pos < (N-i+1); ++pos) {
+                ngram.clear();
+                ngram = tokens[pos];
+
+                for (j=pos+1;j<pos+i; ++j) {
+                    ngram += " " + tokens[j];
+                }
+                fprintf(outfile, "%s\n", ngram.c_str());
+            }
+		}
+
 		//while (it = ngramStream.ngram_iter(tokenStream.token_iter(buf)); it != it.end(); ++it) {
 			//fprintf(outfile, "%s", *it);
 		//}
-	}	
+	}
 
 	if ( infile != stdin ) {
 		fclose(infile);
@@ -85,7 +120,7 @@ void usage() {
 }
 
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
 	// Disable I/O Streams syncing by default
 	std::ios_base::sync_with_stdio(false);

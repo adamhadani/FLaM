@@ -1,24 +1,31 @@
 #
 # FLaM Makefile
 #
-###############################################################################
+SRCDIR=src
+SRCS=$(SRCDIR)/flamapp.cpp
+
+EXECUTABLES=flamapp
+
+INCDIR=-I./include
+LIBS=-lcxxtools
 
 CC=g++
-CFLAGS=-lcxxtools -Wall
+CFLAGS=-Wno-deprecated -Wall
+OBJS=$(SRCS:.cpp=.o)
 
-SRCDIR=src
-BUILDDIR=build
-
-###############################################################################
-
-make: $(SRCDIR)/flamapp.o
-	mkdir -p $(BUILDDIR)
-	$(CC) -o $(BUILDDIR)/flamapp $(SRCDIR)/flamapp.o $(CFLAGS)
-
+.SUFFIXES: .cpp .o
 .PHONY: clean
 
+all: flamapp
+
+$(EXECUTABLES): $(OBJS)
+	$(CC) $(CFLAGS) $(INCDIR) -o $@ $(subst src,.,$(OBJS)) $(LIBS)
+
+.cpp.o:
+	$(CC) $(CFLAGS) $(INCDIR) -c $<
+
 clean:
-	rm -rf $(BUILDDIR) $(SRCDIR)/*.o
+	rm -rf *.o $(EXECUTABLES)
 
 
 

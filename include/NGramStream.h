@@ -1,6 +1,10 @@
 #ifndef NGRAMSTREAM_H
 #define NGRAMSTREAM_H
 
+#include <iostream>
+#include <cstdio>
+
+
 namespace flam {
 
 class NGramStream
