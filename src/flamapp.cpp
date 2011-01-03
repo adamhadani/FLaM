@@ -10,19 +10,21 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <math.h>
 
 #include <cxxtools/arg.h>
 
 #include "lineiterator.h"
 #include "tokenstream.h"
 
-
+#define MIN(X,Y) ((X) < (Y) ? : (X) : (Y))
 #define MAX_BUF_SZ 1024
 
 
 using std::string;
 using std::vector;
 using std::cout;
+using std::cerr;
 using std::endl;
 
 using cxxtools::Arg;
@@ -60,7 +62,7 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
 		outfile = fopen(output_fname, "w");
 	}
 
-    int i,j,N,pos;
+    int i,j,N,pos,m;
 	char buf[MAX_BUF_SZ];
 	char *tok = NULL;
 	std::vector<std::string> tokens;
@@ -84,7 +86,8 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
 
 		// Emit all N-Grams of order (min_N, max_N)
 		N=tokens.size();
-        for (i=min_N; i<max_N+1; ++i) {
+		m = (N < max_N) ? N : max_N;
+        for (i=min_N; i<m+1; ++i) {
             for (pos=0; pos < (N-i+1); ++pos) {
                 ngram.clear();
                 ngram = tokens[pos];
@@ -95,10 +98,6 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
                 fprintf(outfile, "%s\n", ngram.c_str());
             }
 		}
-
-		//while (it = ngramStream.ngram_iter(tokenStream.token_iter(buf)); it != it.end(); ++it) {
-			//fprintf(outfile, "%s", *it);
-		//}
 	}
 
 	if ( infile != stdin ) {
@@ -140,7 +139,7 @@ int main(int argc, char* argv[])
 
 	switch (taskType) {
 		case FLaMApp::tBuildNGrams:
-			cout << "Building N-Gram file. Input file: " << input_fname << ", Output file: " << output_fname << endl;
+			cerr << "Building N-Gram file. Input file: " << input_fname << ", Output file: " << output_fname << endl;
 			app.buildNGrams(input_fname, output_fname);
 			break;
 	}

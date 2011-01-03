@@ -9,8 +9,8 @@ EXECUTABLES=flamapp
 INCDIR=-I./include
 LIBS=-lcxxtools
 
-CC=g++
-CFLAGS=-Wno-deprecated -Wall
+CC=gcc
+CFLAGS=-Wno-deprecated -Wall -O3
 OBJS=$(SRCS:.cpp=.o)
 
 .SUFFIXES: .cpp .o
