@@ -61,10 +61,9 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
 	char buf[MAX_BUF_SZ];
 	while ( fgets(buf, MAX_BUF_SZ, infile) != NULL ) {
 		// tokenize and generate all n-grams
-		while (it = ngramStream.ngram_iter(tokenStream.token_iter(buf)); it != it.end(); ++it) {
-			
+		//while (it = ngramStream.ngram_iter(tokenStream.token_iter(buf)); it != it.end(); ++it) {
 			//fprintf(outfile, "%s", *it);
-		}
+		//}
 	}	
 
 	if ( infile != stdin ) {
@@ -92,8 +91,8 @@ int main(int argc, char* argv[])
 	std::ios_base::sync_with_stdio(false);
 
 	cxxtools::Arg<const char*> task(argc, argv, "--task");
-	cxxtools::Arg<const char*> input_fname(argc, argv, 'i');
-	cxxtools::Arg<const char*> output_fname(argc, argv, 'o');
+	cxxtools::Arg<const char*> input_fname(argc, argv, 'i', "-");
+	cxxtools::Arg<const char*> output_fname(argc, argv, 'o', "-");
 
 	if ( !task || !input_fname || !output_fname ) {
 		usage();
