@@ -14,10 +14,13 @@
 
 #include <cxxtools/arg.h>
 
-#define MAX_BUF_SZ 1024
+#define MIN(X,Y) ((X) < (Y) ? : (X) : (Y))
+#define MAX_BUF_SZ 256
+#define TCHAR wchar_t
 
 using std::string;
 using std::vector;
+using std::map;
 using std::cout;
 using std::cerr;
 using std::endl;
@@ -41,6 +44,10 @@ class FLaMApp
 	int buildVocabulary(const char* input_fname, const char* output_fname);
 };
 
+int FLaMApp::buildVocabulary(const char* input_fname, const char* output_fname) {
+    return 0;
+}
+
 int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int min_N, int max_N)
 {
 	FILE *infile=NULL, *outfile=NULL;
@@ -60,6 +67,7 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
     int i,j,N,pos,m;
 	char buf[MAX_BUF_SZ];
 	char *tok = NULL;
+
 	std::vector<std::string> tokens;
     std::string ngram;
 
@@ -70,17 +78,17 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
         if (nlptr) *nlptr = '\0';
 
 	    tokens.clear();
+        N=0;
 
 		// tokenize
 		tok = strtok(buf, " ");
 		while ( tok != NULL ) {
 		    tokens.push_back(tok);
-
             tok = strtok(NULL, " ");
+            ++N;
 		}
 
-		// Emit all N-Grams of order (min_N, max_N)
-		N=tokens.size();
+		// Emit all N-Grams of order [min_N, max_N]
 		m = (N < max_N) ? N : max_N;
         for (i=min_N; i<m+1; ++i) {
             for (pos=0; pos < (N-i+1); ++pos) {
@@ -118,24 +126,33 @@ int main(int argc, char* argv[])
 {
 	// Disable I/O Streams syncing by default
 	std::ios_base::sync_with_stdio(false);
-
-	cxxtools::Arg<const char*> task(argc, argv, "--task");
+	cxxtools::Arg<std::string> task(argc, argv, "--task");
 	cxxtools::Arg<const char*> input_fname(argc, argv, 'i', "-");
 	cxxtools::Arg<const char*> output_fname(argc, argv, 'o', "-");
+	cxxtools::Arg<int> min_N(argc, argv, "--min_N", 1);
+	cxxtools::Arg<int> max_N(argc, argv, "--max_N", 3);
 
-	if ( !task || !input_fname || !output_fname ) {
+	std::map<std::string, FLaMApp::TaskTypes> tasksMap;
+	tasksMap["build_ngrams"] = FLaMApp::tBuildNGrams;
+	tasksMap["build_vocabulary"] = FLaMApp::tBuildVocabulary;
+
+	if ( tasksMap.find(task) == tasksMap.end() || !input_fname || !output_fname ) {
 		usage();
 		return EXIT_FAILURE;
 	}
 
 	FLaMApp app;
 
-	enum FLaMApp::TaskTypes taskType = FLaMApp::tBuildNGrams;
+	enum FLaMApp::TaskTypes taskType = tasksMap[task];
 
 	switch (taskType) {
 		case FLaMApp::tBuildNGrams:
 			cerr << "Building N-Gram file. Input file: " << input_fname << ", Output file: " << output_fname << endl;
-			app.buildNGrams(input_fname, output_fname);
+			app.buildNGrams(input_fname, output_fname, min_N, max_N);
+			break;
+		case FLaMApp::tBuildVocabulary:
+			cerr << "Building Vocabulary file. Input file: " << input_fname << ", Output file: " << output_fname << endl;
+			app.buildVocabulary(input_fname, output_fname);
 			break;
 	}
 
