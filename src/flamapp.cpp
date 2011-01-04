@@ -27,9 +27,6 @@ using std::endl;
 
 using cxxtools::Arg;
 
-//using flam::line_iterator;
-//using flam::ngram_iterator;
-
 
 class FLaMApp
 {
@@ -44,7 +41,8 @@ class FLaMApp
 	int buildVocabulary(const char* input_fname, const char* output_fname);
 };
 
-int FLaMApp::buildVocabulary(const char* input_fname, const char* output_fname) {
+int FLaMApp::buildVocabulary(const char* input_fname, const char* output_fname)
+{
     return 0;
 }
 
@@ -112,7 +110,8 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
 	return 0;
 }
 
-void usage() {
+void usage()
+{
 	fprintf(stderr, "Usage: flamapp --task <task> -i <input_fname> -o <output_fname>\n"
 		"Options:\n"
 		"    --task \t Task to execute. Valid tasks are 'build_vocabulary', 'build_ngrams'.\n"
@@ -120,7 +119,6 @@ void usage() {
 		"    -o \t Output file to write to (NGram model, vocabulary etc.).\n"
 	);
 }
-
 
 int main(int argc, char* argv[])
 {
