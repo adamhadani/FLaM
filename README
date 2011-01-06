@@ -1,0 +1,19 @@
+FLaM - Fast Language Modelling toolkit
+--------------------------------------
+FLaM includes some easy to use tools for common language model tasks.
+It is aimed to provide a unicode-safe, fast and easy to use command line interface
+for tasks such creating ngram indexes, vocabularies, backoff models etc.
+
+
+Prerequisites
+----------
+* cxxtools
+
+  This is abit tricky since the version currently available on Ubuntu repository is lacking some needed headers.
+  To install from SVN:
+
+  svn co https://cxxtools.svn.sourceforge.net/svnroot/cxxtools/trunk/cxxtools cxxtools
+  cd cxxtools
+  ./autogen.sh
+  ./configure && make && sudo make install
+
