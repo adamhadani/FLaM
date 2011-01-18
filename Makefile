@@ -2,7 +2,9 @@
 # FLaM Makefile
 #
 SRCDIR=src
-SRCS=$(SRCDIR)/flamapp.cpp
+SRCS = \
+	$(SRCDIR)/flamapp.cpp \
+	$(SRCDIR)/stringtokenizer.cpp
 
 EXECUTABLES=flamapp
 
@@ -10,7 +12,7 @@ INCDIR=-I./include
 LIBS=-lcxxtools
 
 CC=gcc
-CFLAGS=-Wno-deprecated -Wall -O3
+CFLAGS=-Wno-deprecated -Wall -O3 -std=c++0x
 OBJS=$(SRCS:.cpp=.o)
 
 .SUFFIXES: .cpp .o
