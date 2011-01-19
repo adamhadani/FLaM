@@ -41,6 +41,7 @@ class HashVocabulary : public Vocabulary
   public:
     bool hasKey(const flmchar_t* key);
     void addKey(const flmchar_t* key);
+    void inc(const flmchar_t* key, uint32_t value);
 
   private:
     std::hash_map<flmchar_t*, uint32_t> _hash;

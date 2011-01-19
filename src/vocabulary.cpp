@@ -30,3 +30,11 @@ bool HashVocabulary::hasKey(const flmchar_t* key)
 
     return true;
 }
+
+void HashVocabulary::inc(const flmchar_t* key, uint32_t value)
+{
+    if ( !hasKey(key) )
+        return;
+
+    _hash[const_cast<flmchar_t *>(key)] += value;
+}
