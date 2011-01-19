@@ -2,6 +2,7 @@
 #define VOCABULARY_H
 
 #include <cstdint>
+#include <algorithm>
 #include <map>
 
 #ifdef __GNUC__
@@ -51,6 +52,13 @@ class HashVocabulary : public Vocabulary
 
   private:
     std::map<flmstring_t, uint32_t> _hash;
+
+    inline flmstring_t _toKey(const flmchar_t* key) {
+        flmstring_t _key(key);
+        std::transform(_key.begin(), _key.end(), _key.begin(), ::tolower);
+        return _key;
+    }
+
 };
 
 class TrieVocabulary : public Vocabulary
