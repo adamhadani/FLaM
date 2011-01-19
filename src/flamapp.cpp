@@ -16,6 +16,7 @@
 
 #include "stringtokenizer.h"
 #include "lineiterator.h"
+#include "vocabulary.h"
 
 #define MIN(X,Y) ((X) < (Y) ? : (X) : (Y))
 #define MAX_BUF_SZ 256
@@ -29,8 +30,7 @@ using std::cerr;
 using std::endl;
 
 using cxxtools::Arg;
-using FLaM::LineIterator;
-using FLaM::StringTokenizer;
+using namespace FLaM;
 
 class FLaMApp
 {
@@ -65,12 +65,30 @@ int FLaMApp::buildVocabulary(const char* input_fname, const char* output_fname)
 		outfile = fopen(output_fname, "w");
 	}
 
+    StringTokenizer tokenizer(" \t");
 	LineIterator lineiterator(infile);
 
-	flmchar_t* line = lineiterator.next();
-	while (line) {
+	Vocabulary* vocabulary = new HashVocabulary();
 
+	flmchar_t *line = lineiterator.next(), *tok=NULL;
+	while (line) {
+		tokenizer.setString(line);
+		tok = tokenizer.next();
+		while ( tok != NULL ) {
+            vocabulary->inc(tok, 1);
+
+            tok = tokenizer.next();
+		}
+
+        line = lineiterator.next();
 	}
+
+	// Emit vocabulary
+    std::map<flmstring_t, uint32_t>::iterator it = dynamic_cast<HashVocabulary *>(vocabulary)->begin();
+    for (; it !=  dynamic_cast<HashVocabulary *>(vocabulary)->end(); ++it)
+    {
+        fprintf(outfile, "%i\t%s\n", it->second, it->first.c_str());
+    }
 
 	if ( infile != stdin ) {
 		fclose(infile);

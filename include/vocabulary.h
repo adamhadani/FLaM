@@ -2,11 +2,14 @@
 #define VOCABULARY_H
 
 #include <cstdint>
+#include <map>
 
 #ifdef __GNUC__
   #include <ext/hash_map>
+  #include <ext/hash_set>
 #else
   #include <hash_map>
+  #include <hash_set>
 #endif
 
 #include "types.h"
@@ -43,8 +46,11 @@ class HashVocabulary : public Vocabulary
     void addKey(const flmchar_t* key);
     void inc(const flmchar_t* key, uint32_t value);
 
+    inline std::map<flmstring_t, uint32_t>::iterator begin() { return _hash.begin(); }
+    inline std::map<flmstring_t, uint32_t>::iterator end() { return _hash.end(); }
+
   private:
-    std::hash_map<flmchar_t*, uint32_t> _hash;
+    std::map<flmstring_t, uint32_t> _hash;
 };
 
 class TrieVocabulary : public Vocabulary
