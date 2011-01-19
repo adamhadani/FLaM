@@ -3,6 +3,8 @@
 
 #include "types.h"
 
+namespace FLaM {
+
 class StringTokenizer
 {
     public:
@@ -29,5 +31,7 @@ class StringTokenizer
         size_t strLen;
         uint16_t nextPos;
 };
+
+}
 
 #endif // STRINGTOKENIZER_H

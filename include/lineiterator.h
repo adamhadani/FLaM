@@ -7,6 +7,7 @@
 
 #include "types.h"
 
+namespace FLaM {
 
 class LineIterator
 {
@@ -22,5 +23,7 @@ class LineIterator
         FILE* infile;
         flmchar_t* buf;
 };
+
+}
 
 #endif // LINEITERATOR_H

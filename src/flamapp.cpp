@@ -44,11 +44,46 @@ class FLaMApp
 	int buildVocabulary(const char* input_fname, const char* output_fname);
 };
 
+/**
+ * Build vocabulary from input text.
+ *
+ */
 int FLaMApp::buildVocabulary(const char* input_fname, const char* output_fname)
 {
+	FILE *infile=NULL, *outfile=NULL;
+	if ( !strcmp(input_fname, "-") ) {
+		infile = stdin;
+	}
+	else {
+		infile = fopen(input_fname, "r");
+	}
+	if ( !strcmp(output_fname, "-") ) {
+		outfile = stdout;
+	}
+	else {
+		outfile = fopen(output_fname, "w");
+	}
+
+	LineIterator lineiterator(infile);
+
+	line = lineiterator.next();
+	while (line) {
+
+	}
+
+	if ( infile != stdin ) {
+		fclose(infile);
+	}
+	if ( outfile != stdout ) {
+		fclose(outfile);
+	}
     return 0;
 }
 
+/**
+ * Emit all ngrams of order [min_N, max_N] from input text
+ *
+ */
 int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int min_N, int max_N)
 {
 	FILE *infile=NULL, *outfile=NULL;
@@ -65,6 +100,9 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
 		outfile = fopen(output_fname, "w");
 	}
 
+    StringTokenizer tokenizer;
+    LineIterator lineiterator(infile);
+
     int i,j,N,pos,m;
 	flmchar_t* line = NULL;
 	flmchar_t* tok = NULL;
@@ -72,12 +110,9 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
 	std::vector<std::string> tokens;
     std::string ngram;
 
-    StringTokenizer tokenizer;
-    LineIterator lineiterator(infile);
-
 	// For each line
 	line = lineiterator.next();
-	while ( line != NULL ) {
+	while (line) {
 	    tokens.clear();
         N=0;
 
