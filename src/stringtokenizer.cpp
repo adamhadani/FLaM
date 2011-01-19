@@ -1,10 +1,6 @@
-#include <cstdio>
-#include <cstdlib>
-#include <string>
-
 #include "stringtokenizer.h"
 
-StringTokenizer::StringTokenizer(flmchar_t* delim, flmchar_t* s)
+StringTokenizer::StringTokenizer(const flmchar_t* delim, const flmchar_t* s)
 {
     this->delim = (char*)malloc(flmstrlen(delim) + 2);
     flmstrcpy(this->delim, delim);
@@ -15,6 +11,10 @@ StringTokenizer::StringTokenizer(flmchar_t* delim, flmchar_t* s)
 
 StringTokenizer::~StringTokenizer()
 {
+    if (delim)
+        free(delim);
+    if (string)
+        free(string);
 }
 
 flmchar_t* StringTokenizer::next()
@@ -44,5 +44,12 @@ flmchar_t* StringTokenizer::next()
     flmchar_t* result = &string[nextPos];
     nextPos = pos+1;
     return result;
+}
 
+bool StringTokenizer::hasNext()
+{
+    if (string[nextPos] == 0)
+        return false;
+
+    return true;
 }

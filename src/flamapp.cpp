@@ -72,6 +72,7 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
     std::string ngram;
 
     StringTokenizer tokenizer;
+    //LineIterator lineiterator;
 
 	// For each line
 	while ( fgets(buf, MAX_BUF_SZ, infile) != NULL ) {

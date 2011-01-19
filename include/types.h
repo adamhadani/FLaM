@@ -6,6 +6,11 @@
 #include <cstring>
 #include <cstdint>
 
+// Function parameters decorators
+#define IN
+#define OUT
+#define INOUT
+
 typedef char flmchar_t;
 
 #define flmstrlen strlen
