@@ -5,7 +5,9 @@ SRCDIR=src
 SRCS = \
 	$(SRCDIR)/flamapp.cpp \
 	$(SRCDIR)/stringtokenizer.cpp \
-	$(SRCDIR)/lineiterator.cpp
+	$(SRCDIR)/lineiterator.cpp \
+	$(SRCDIR)/vocabulary.cpp \
+	$(SRCDIR)/trie.cpp
 
 EXECUTABLES=flamapp
 

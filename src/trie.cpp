@@ -1,11 +1,15 @@
 #include "trie.h"
 
-Trie::Trie()
+using namespace FLaM;
+
+template <typename K, typename V>
+Trie<K, V>::Trie()
 {
     //ctor
 }
 
-Trie::~Trie()
+template <typename K, typename V>
+Trie <K, V>::~Trie()
 {
     //dtor
 }

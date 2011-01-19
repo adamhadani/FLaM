@@ -2,6 +2,8 @@
 
 #define MAX_BUF_SZ 512
 
+using namespace FLaM;
+
 LineIterator::LineIterator(FILE* infile)
     : infile(infile)
 {

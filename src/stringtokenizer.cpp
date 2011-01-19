@@ -1,5 +1,7 @@
 #include "stringtokenizer.h"
 
+using namespace FLaM;
+
 StringTokenizer::StringTokenizer(const flmchar_t* delim, const flmchar_t* s)
 {
     this->delim = (char*)malloc(flmstrlen(delim) + 2);
@@ -53,3 +55,4 @@ bool StringTokenizer::hasNext()
 
     return true;
 }
+

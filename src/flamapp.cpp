@@ -29,7 +29,8 @@ using std::cerr;
 using std::endl;
 
 using cxxtools::Arg;
-
+using FLaM::LineIterator;
+using FLaM::StringTokenizer;
 
 class FLaMApp
 {
@@ -66,7 +67,7 @@ int FLaMApp::buildVocabulary(const char* input_fname, const char* output_fname)
 
 	LineIterator lineiterator(infile);
 
-	line = lineiterator.next();
+	flmchar_t* line = lineiterator.next();
 	while (line) {
 
 	}

@@ -3,7 +3,17 @@
 
 #include <cstdint>
 
+#ifdef __GNUC__
+  #include <ext/hash_map>
+#else
+  #include <hash_map>
+#endif
+
 #include "types.h"
+#include "trie.h"
+
+namespace std { using namespace __gnu_cxx; }
+
 
 namespace FLaM {
 
