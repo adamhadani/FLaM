@@ -15,6 +15,7 @@
 #include <cxxtools/arg.h>
 
 #include "stringtokenizer.h"
+#include "lineiterator.h"
 
 #define MIN(X,Y) ((X) < (Y) ? : (X) : (Y))
 #define MAX_BUF_SZ 256
@@ -65,26 +66,23 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
 	}
 
     int i,j,N,pos,m;
-	char buf[MAX_BUF_SZ];
+	flmchar_t* line = NULL;
 	flmchar_t* tok = NULL;
 
 	std::vector<std::string> tokens;
     std::string ngram;
 
     StringTokenizer tokenizer;
-    //LineIterator lineiterator;
+    LineIterator lineiterator(infile);
 
 	// For each line
-	while ( fgets(buf, MAX_BUF_SZ, infile) != NULL ) {
-	    // strip newline
-        char *nlptr = strchr(buf, '\n');
-        if (nlptr) *nlptr = '\0';
-
+	line = lineiterator.next();
+	while ( line != NULL ) {
 	    tokens.clear();
         N=0;
 
 		// tokenize
-		tokenizer.setString(buf);
+		tokenizer.setString(line);
 		tok = tokenizer.next();
 		while ( tok != NULL ) {
 		    tokens.push_back(tok);
@@ -105,6 +103,8 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
                 fprintf(outfile, "%s\n", ngram.c_str());
             }
 		}
+
+		line = lineiterator.next();
 	}
 
 	if ( infile != stdin ) {

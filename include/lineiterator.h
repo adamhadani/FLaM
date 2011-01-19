@@ -11,15 +11,16 @@
 class LineIterator
 {
     public:
-        LineIterator(FILE* ifh=NULL);
+        explicit LineIterator(FILE* infile);
         virtual ~LineIterator();
 
-        void setFile(FILE* ifh)
+        void setFile(FILE* infile);
         flmchar_t* next();
         bool hasNext();
 
-    protected:
     private:
+        FILE* infile;
+        flmchar_t* buf;
 };
 
 #endif // LINEITERATOR_H

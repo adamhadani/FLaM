@@ -4,7 +4,8 @@
 SRCDIR=src
 SRCS = \
 	$(SRCDIR)/flamapp.cpp \
-	$(SRCDIR)/stringtokenizer.cpp
+	$(SRCDIR)/stringtokenizer.cpp \
+	$(SRCDIR)/lineiterator.cpp
 
 EXECUTABLES=flamapp
 
