@@ -64,6 +64,8 @@ class Vocabulary
 class HashVocabulary : public Vocabulary
 {
   public:
+    ~HashVocabulary();
+
     typedef std::hash_map<const flmchar_t*, uint32_t, hash<const flmchar_t*>, eqstr> HashMap;
 
     bool hasKey(const flmchar_t* key);

@@ -16,6 +16,11 @@ Vocabulary::~Vocabulary()
 
 // HashVocabulary Implementation
 
+HashVocabulary::~HashVocabulary()
+{
+
+}
+
 void HashVocabulary::addKey(const flmchar_t* key)
 {
     const flmchar_t* _key = _toKey(key);
