@@ -1,7 +1,9 @@
 #ifndef VOCABULARY_H
 #define VOCABULARY_H
 
+#include <iostream>
 #include <cstdint>
+#include <cstring>
 #include <algorithm>
 #include <map>
 
@@ -18,6 +20,13 @@
 
 namespace std { using namespace __gnu_cxx; }
 
+using std::hash;
+
+struct eqstr {
+  bool operator()(const flmchar_t* s1, const flmchar_t* s2) const {
+    return flmstrcmp(s1,s2)==0;
+  }
+};
 
 namespace FLaM {
 
@@ -43,18 +52,20 @@ class Vocabulary
 class HashVocabulary : public Vocabulary
 {
   public:
+    typedef std::hash_map<const flmchar_t*, uint32_t, hash<const flmchar_t*>, eqstr> HashMap;
+
     bool hasKey(const flmchar_t* key);
     void addKey(const flmchar_t* key);
     void inc(const flmchar_t* key, uint32_t value);
 
-    inline std::map<flmstring_t, uint32_t>::iterator begin() { return _hash.begin(); }
-    inline std::map<flmstring_t, uint32_t>::iterator end() { return _hash.end(); }
+    inline HashMap::iterator begin() { return _hash.begin(); }
+    inline HashMap::iterator end() { return _hash.end(); }
 
   private:
-    std::map<flmstring_t, uint32_t> _hash;
+    HashMap _hash;
 
-    inline flmstring_t _toKey(const flmchar_t* key) {
-        flmstring_t _key(key);
+    inline const flmchar_t* _toKey(const flmchar_t* key) {
+        const flmchar_t* _key(key);
         std::transform(_key.begin(), _key.end(), _key.begin(), ::tolower);
         return _key;
     }

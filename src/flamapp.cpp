@@ -84,10 +84,11 @@ int FLaMApp::buildVocabulary(const char* input_fname, const char* output_fname)
 	}
 
 	// Emit vocabulary
-    std::map<flmstring_t, uint32_t>::iterator it = dynamic_cast<HashVocabulary *>(vocabulary)->begin();
-    for (; it !=  dynamic_cast<HashVocabulary *>(vocabulary)->end(); ++it)
+	HashVocabulary* hash_vocab = dynamic_cast<HashVocabulary *>(vocabulary);
+    std::hash_map<const flmchar_t*, uint32_t, hash<const flmchar_t*>, eqstr>::iterator it = hash_vocab->begin();
+    for (; it != hash_vocab->end(); ++it)
     {
-        fprintf(outfile, "%i\t%s\n", it->second, it->first.c_str());
+        fprintf(outfile, "%i\t%s\n", it->second, it->first);
     }
 
 	if ( infile != stdin ) {

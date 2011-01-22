@@ -1,6 +1,6 @@
 #include "lineiterator.h"
 
-#define MAX_BUF_SZ 512
+#define MAX_BUF_SZ 1024
 
 using namespace FLaM;
 

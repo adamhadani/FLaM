@@ -20,5 +20,6 @@ typedef std::string flmstring_t;
 
 #define flmstrlen strlen
 #define flmstrcpy strcpy
+#define flmstrcmp strcmp
 
 #endif // TYPES_H_INCLUDED
