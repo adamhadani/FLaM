@@ -46,7 +46,19 @@ class Vocabulary
         virtual void addKey(const flmchar_t* key) =0;
         virtual void inc(const flmchar_t* key, uint32_t value) =0;
 
-    private:
+    protected:
+        inline flmchar_t* _toKey(const flmchar_t* key) {
+            flmchar_t* _key = (flmchar_t *)malloc(flmstrlen(key) + 1);
+            flmstrcpy(_key, key);
+
+            // Lower case
+            for (flmchar_t* c=_key; *c != '\x0'; ++c) {
+                *c = tolower(*c);
+            }
+
+            return _key;
+        }
+
 };
 
 class HashVocabulary : public Vocabulary
@@ -63,13 +75,6 @@ class HashVocabulary : public Vocabulary
 
   private:
     HashMap _hash;
-
-    inline const flmchar_t* _toKey(const flmchar_t* key) {
-        const flmchar_t* _key(key);
-        std::transform(_key.begin(), _key.end(), _key.begin(), ::tolower);
-        return _key;
-    }
-
 };
 
 class TrieVocabulary : public Vocabulary
