@@ -25,6 +25,7 @@ MAX_TERMS=300000
 log "Creating vocabulary and sorting..."
 
 cat $* | \
+	flamapp --task text2wfreq | \
 	LC_ALL=C sort -k1,1 -nr | \
 	awk -F"\t" '{print $2}' | \
 	head -n ${MAX_TERMS}
