@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# Bash wrapper to create vocabulary
+# from word frequency count file.
+# Will sort the word frequency file
+# and thershold on frequency / number of
+# terms.
+#
+#
+###############################################################################
+
+log() {
+	printf "`date +%c` - $*\n" >&2
+}
+usage() {
+	printf "USAGE: $(basename $0) -m <max_terms> < infile > outfile\n" >&2
+	exit 1
+}
+
+###############################################################################
+
+# Max terms in vocabulary
+MAX_TERMS=300000
+
+log "Creating vocabulary and sorting..."
+
+cat $* | \
+	flamapp --task text2wfreq | \
+	LC_ALL=C sort -k1,1 -nr | \
+	awk -F"\t" '{print $2}' | \
+	head -n ${MAX_TERMS}
+
+log "All done"
