@@ -1,3 +1,10 @@
+/*
+ *
+ * Trie data structure
+ *
+ * @author Adam Ever-Hadani <adamhadani@videosurf.com>
+ *
+ */
 #ifndef TRIE_H
 #define TRIE_H
 

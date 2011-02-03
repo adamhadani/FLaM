@@ -8,7 +8,7 @@ import sys
 from itertools import imap
 
 def main(argv):
-    min_N=1; max_N=3;
+    min_N=2; max_N=2;
 
     for line in imap(lambda x: x.strip(), sys.stdin):
         tokens = line.split(" ")

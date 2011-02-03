@@ -1,3 +1,10 @@
+/*
+ *
+ * Line iterator over input files
+ *
+ * @author Adam Ever-Hadani <adamhadani@videosurf.com>
+ *
+ */
 #ifndef LINEITERATOR_H
 #define LINEITERATOR_H
 

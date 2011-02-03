@@ -1,9 +1,10 @@
-//
-// flamapp.cpp
-//
-// Main runnable application code for FLaM framework
-//
-
+/*
+ *
+ * Main runnable application code for FLaM framework
+ *
+ * @author Adam Ever-Hadani <adamhadani@videosurf.com>
+ *
+ */
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -18,9 +19,6 @@
 #include "lineiterator.h"
 #include "vocabulary.h"
 
-#define MIN(X,Y) ((X) < (Y) ? : (X) : (Y))
-#define MAX_BUF_SZ 256
-#define TCHAR wchar_t
 
 using std::string;
 using std::vector;
@@ -35,7 +33,7 @@ using namespace FLaM;
 class FLaMApp
 {
   public:
-	enum TaskTypes { tBuildVocabulary, tBuildNGrams };
+	enum TaskTypes { tBuildWordFreq, tBuildVocabulary, tBuildNGrams, tBuildIDNGrams };
 	std::map<std::string, int> taskMap;
 
 	FLaMApp() {}
@@ -85,7 +83,7 @@ int FLaMApp::buildVocabulary(const char* input_fname, const char* output_fname)
 
 	// Emit vocabulary
 	HashVocabulary* hash_vocab = dynamic_cast<HashVocabulary *>(vocabulary);
-    std::hash_map<const flmchar_t*, uint32_t, hash<const flmchar_t*>, eqstr>::iterator it = hash_vocab->begin();
+    HashVocabulary::SymbolMap::iterator it = hash_vocab->begin();
     for (; it != hash_vocab->end(); ++it)
     {
         fprintf(outfile, "%i\t%s\n", it->second, it->first);
@@ -175,8 +173,10 @@ void usage()
 {
 	fprintf(stderr, "Usage: flamapp --task <task> -i <input_fname> -o <output_fname>\n"
 		"Options:\n"
-		"    --task \t Task to execute. Valid tasks are 'build_vocabulary', 'build_ngrams'.\n"
+		"    --task \t Task to execute. Valid tasks are 'wfreq2vocab', 'text2wngram'.\n"
 		"    -i \t Input file to read from (Use '-' for stdin).\n"
+		"    --min_N \t Used with text2wngram, minimal order of ngrams to extract.\n"
+		"    --max_N \t Used with text2wngram, maximal order of ngrams to extract.\n"
 		"    -o \t Output file to write to (NGram model, vocabulary etc.).\n"
 	);
 }
@@ -185,6 +185,8 @@ int main(int argc, char* argv[])
 {
 	// Disable I/O Streams syncing by default
 	std::ios_base::sync_with_stdio(false);
+
+	// Parse command line options
 	cxxtools::Arg<std::string> task(argc, argv, "--task");
 	cxxtools::Arg<const char*> input_fname(argc, argv, 'i', "-");
 	cxxtools::Arg<const char*> output_fname(argc, argv, 'o', "-");
@@ -192,8 +194,9 @@ int main(int argc, char* argv[])
 	cxxtools::Arg<int> max_N(argc, argv, "--max_N", 3);
 
 	std::map<std::string, FLaMApp::TaskTypes> tasksMap;
-	tasksMap["build_ngrams"] = FLaMApp::tBuildNGrams;
-	tasksMap["build_vocabulary"] = FLaMApp::tBuildVocabulary;
+	//tasksMap["text2wfreq"] = FLaMApp::tBuildWordFreq;
+	tasksMap["wfreq2vocab"] = FLaMApp::tBuildVocabulary;
+	tasksMap["text2wngram"] = FLaMApp::tBuildNGrams;
 
 	if ( tasksMap.find(task) == tasksMap.end() || !input_fname || !output_fname ) {
 		usage();

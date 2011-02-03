@@ -1,3 +1,10 @@
+/*
+ *
+ * Vocabulary types
+ *
+ * @author Adam Ever-Hadani <adamhadani@videosurf.com>
+ *
+ */
 #ifndef VOCABULARY_H
 #define VOCABULARY_H
 
@@ -66,17 +73,18 @@ class HashVocabulary : public Vocabulary
   public:
     ~HashVocabulary();
 
-    typedef std::hash_map<const flmchar_t*, uint32_t, hash<const flmchar_t*>, eqstr> HashMap;
+    // Internal hash table representation for the symbol -> id mapping
+    typedef std::hash_map<const flmchar_t*, uint32_t, hash<const flmchar_t*>, eqstr> SymbolMap;
 
     bool hasKey(const flmchar_t* key);
     void addKey(const flmchar_t* key);
     void inc(const flmchar_t* key, uint32_t value);
 
-    inline HashMap::iterator begin() { return _hash.begin(); }
-    inline HashMap::iterator end() { return _hash.end(); }
+    inline SymbolMap::iterator begin() { return _hash.begin(); }
+    inline SymbolMap::iterator end() { return _hash.end(); }
 
   private:
-    HashMap _hash;
+    SymbolMap _hash;
 };
 
 class TrieVocabulary : public Vocabulary

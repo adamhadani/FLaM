@@ -1,3 +1,10 @@
+/*
+ *
+ * Line iterator over input files
+ *
+ * @author Adam Ever-Hadani <adamhadani@videosurf.com>
+ *
+ */
 #include "lineiterator.h"
 
 #define MAX_BUF_SZ 1024

@@ -1,3 +1,10 @@
+/*
+ *
+ * Trie data structure
+ *
+ * @author Adam Ever-Hadani <adamhadani@videosurf.com>
+ *
+ */
 #include "trie.h"
 
 using namespace FLaM;

@@ -1,3 +1,10 @@
+/*
+ *
+ * String Tokenization
+ *
+ * @author Adam Ever-Hadani <adamhadani@videosurf.com>
+ *
+ */
 #ifndef STRINGTOKENIZER_H
 #define STRINGTOKENIZER_H
 
@@ -13,17 +20,9 @@ class StringTokenizer
 
         // Set the string to tokenize. This function allows for object
         // reuse of the StringTokenizer instance.
-        inline void setString(const flmchar_t* string)
-        {
-            this->string = (char*)malloc(flmstrlen(string) + 2);
-            flmstrcpy(this->string, string);
-
-            nextPos = 0;
-            strLen = flmstrlen(string);
-        }
+        void setString(const flmchar_t* string);
 
         bool hasNext();
-
         flmchar_t* next();
 
     private:
