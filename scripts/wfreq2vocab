@@ -22,10 +22,13 @@ usage() {
 # Max terms in vocabulary
 MAX_TERMS=300000
 
+# key to sort by (e.g frequency column index)
+KEY=1
+
 log "Creating vocabulary and sorting..."
 
 cat $* | \
-	LC_ALL=C sort -k1,1 -nr | \
+	LC_ALL=C sort -k${KEY},${KEY} -nr | \
 	awk -F"\t" '{print $2}' | \
 	head -n ${MAX_TERMS}
 

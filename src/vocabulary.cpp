@@ -30,10 +30,10 @@ HashVocabulary::~HashVocabulary()
 
 }
 
-void HashVocabulary::addKey(const flmchar_t* key)
+void HashVocabulary::addKey(const flmchar_t* key, uint32_t value)
 {
     const flmchar_t* _key = _toKey(key);
-    _hash[_key] = 1;
+    _hash[_key] = value;
 }
 
 bool HashVocabulary::hasKey(const flmchar_t* key)
@@ -46,8 +46,3 @@ bool HashVocabulary::hasKey(const flmchar_t* key)
     return true;
 }
 
-void HashVocabulary::inc(const flmchar_t* key, uint32_t value)
-{
-    const flmchar_t* _key = _toKey(key);
-    _hash[_key] += value;
-}

@@ -50,7 +50,7 @@ class Vocabulary
         virtual ~Vocabulary();
 
         virtual bool hasKey(const flmchar_t* key) =0;
-        virtual void addKey(const flmchar_t* key) =0;
+        virtual void addKey(const flmchar_t* key, uint32_t value=1) =0;
         virtual void inc(const flmchar_t* key, uint32_t value) =0;
 
     protected:
@@ -71,14 +71,21 @@ class Vocabulary
 class HashVocabulary : public Vocabulary
 {
   public:
-    ~HashVocabulary();
+    static const size_t PREALLOC_HASH_SZ = 1000000;
 
     // Internal hash table representation for the symbol -> id mapping
     typedef std::hash_map<const flmchar_t*, uint32_t, hash<const flmchar_t*>, eqstr> SymbolMap;
 
+    //HashVocabulary() : _hash(HashVocabulary::PREALLOC_HASH_SZ) {}
+    ~HashVocabulary();
+
+
     bool hasKey(const flmchar_t* key);
-    void addKey(const flmchar_t* key);
-    void inc(const flmchar_t* key, uint32_t value);
+    void addKey(const flmchar_t* key, uint32_t value=1);
+    inline void inc(const flmchar_t* key, uint32_t value) {
+        const flmchar_t* _key = _toKey(key);
+        _hash[_key] += value;
+    }
 
     inline SymbolMap::iterator begin() { return _hash.begin(); }
     inline SymbolMap::iterator end() { return _hash.end(); }

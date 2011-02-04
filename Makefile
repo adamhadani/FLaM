@@ -16,6 +16,8 @@ LIBS=-lcxxtools
 
 CC=gcc
 CFLAGS=-Wno-deprecated -Wall -O3 -std=c++0x
+#PROFILEFLAGS=-pg
+PROFILEFLAGS=
 OBJS=$(SRCS:.cpp=.o)
 
 .SUFFIXES: .cpp .o
@@ -24,10 +26,10 @@ OBJS=$(SRCS:.cpp=.o)
 all: flamapp
 
 $(EXECUTABLES): $(OBJS)
-	$(CC) $(CFLAGS) $(INCDIR) -o $@ $(subst src,.,$(OBJS)) $(LIBS)
+	$(CC) $(CFLAGS) $(PROFILEFLAGS) $(INCDIR) -o $@ $(subst src,.,$(OBJS)) $(LIBS)
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(INCDIR) -c $<
+	$(CC) $(CFLAGS) $(PROFILEFLAGS) $(INCDIR) -c $<
 
 clean:
 	rm -rf *.o $(EXECUTABLES)

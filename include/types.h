@@ -38,4 +38,10 @@ using std::wstring;
 #define OUT
 #define INOUT
 
+#ifdef __WITH_GCC
+# define _tname_
+#else
+# define _tname_ typename
+#endif
+
 #endif // TYPES_H_INCLUDED
