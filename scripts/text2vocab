@@ -25,6 +25,7 @@ MAX_TERMS=65535
 if [ "$#" -gt 0 ];
 then
 	MAX_TERMS=$1
+	shift
 fi
 
 log "Creating vocabulary and sorting. MAX_TERMS == ${MAX_TERMS}"
