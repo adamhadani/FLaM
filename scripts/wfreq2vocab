@@ -2,9 +2,6 @@
 #
 # Bash wrapper to create vocabulary
 # from word frequency count file.
-# Will sort the word frequency file
-# and thershold on frequency / number of
-# terms.
 #
 #
 ###############################################################################
@@ -20,15 +17,14 @@ usage() {
 ###############################################################################
 
 # Max terms in vocabulary
-MAX_TERMS=300000
+MAX_TERMS=65535
 
 # key to sort by (e.g frequency column index)
 KEY=1
 
-log "Creating vocabulary and sorting..."
+log "Creating vocabulary from sorted wfreq file"
 
 cat $* | \
-	LC_ALL=C sort -k${KEY},${KEY} -nr | \
 	awk -F"\t" '{print $2}' | \
 	head -n ${MAX_TERMS}
 
