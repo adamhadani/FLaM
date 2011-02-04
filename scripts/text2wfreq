@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Bash wrapper to create
+# word frequency count file.
+#
+###############################################################################
+
+log() {
+	printf "`date +%c` - $*\n" >&2
+}
+usage() {
+	printf "USAGE: $(basename $0) < infile > outfile\n" >&2
+	exit 1
+}
+
+###############################################################################
+
+log "Creating word frequency file and sorting."
+
+cat $* | \
+	./flamapp --task text2wfreq | \
+	LC_ALL=C sort -k1,1 -nr
+
+log "All done"
