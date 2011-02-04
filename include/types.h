@@ -33,6 +33,8 @@ using std::wstring;
  #define flmstrcmp w_strcmp
 #endif
 
+#define flmwid_t uint32_t
+
 // Function parameters decorators, optionally used to clarify
 #define IN
 #define OUT

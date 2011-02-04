@@ -30,8 +30,11 @@ HashVocabulary::~HashVocabulary()
 
 }
 
-void HashVocabulary::addKey(flmchar_t* key, uint32_t value)
+void HashVocabulary::addKey(const flmchar_t* key, uint32_t value)
 {
+    if (!key)
+        return;
+
     flmchar_t* _key = _toKey(key);
     _hash[_key] = value;
 }

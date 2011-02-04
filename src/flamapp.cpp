@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <map>
@@ -187,7 +188,7 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
 
 int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, int n, const char* vocab_fname)
 {
-	FILE *infile=NULL, *outfile=NULL;
+	FILE *infile=NULL, *outfile=NULL, *vocabfile=NULL;
 	if ( !strcmp(input_fname, "-") ) {
 		infile = stdin;
 	}
@@ -200,15 +201,72 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, in
 	else {
 		outfile = fopen(output_fname, "w");
 	}
+    vocabfile = fopen(vocab_fname, "r");
+
+	// Popoulate vocabulary ID mapping from file
 
     HashVocabulary vocabulary;
-    LineIterator lineiterator(infile);
-    flmchar_t* line = lineiterator.next();;
+    LineIterator v_lineiterator(vocabfile);
+    flmchar_t* line = v_lineiterator.next();
 
-    for (uint32_t id=0; line != NULL; ++id) {
-        line = lineiterator.next();
+    for (flmwid_t id=1; line != NULL; ++id) {
         vocabulary.addKey(line, id);
+        line = v_lineiterator.next();
     }
+
+    // Generate ID NGrams from input stream
+    StringTokenizer tokenizer;
+    LineIterator lineiterator(infile);
+
+    int i,j,N,pos,m;
+    int min_N=n, max_N=n;
+	flmchar_t* tok = NULL;
+
+	std::vector<flmwid_t> ids;
+    std::stringstream ngram;
+
+	// For each line
+	line = lineiterator.next();
+	while (line) {
+	    ids.clear();
+        N=0;
+
+		// tokenize
+		tokenizer.setString(line);
+		tok = tokenizer.next();
+		while ( tok != NULL ) {
+		    flmwid_t id = vocabulary.getValue(tok);
+		    ids.push_back(id);
+            tok = tokenizer.next();
+            ++N;
+		}
+
+		// Emit all N-Grams of order [min_N, max_N]
+		m = (N < max_N) ? N : max_N;
+        for (i=min_N; i<m+1; ++i) {
+            for (pos=0; pos < (N-i+1); ++pos) {
+                ngram.str(std::string());
+                ngram << ids[pos];
+                for (j=pos+1;j<pos+i; ++j) {
+                    ngram << " " << ids[j];
+                }
+                fprintf(outfile, "%s\n", ngram.str().c_str());
+            }
+		}
+
+		line = lineiterator.next();
+	}
+
+	if ( infile != stdin ) {
+		fclose(infile);
+	}
+	if ( outfile != stdout ) {
+		fclose(outfile);
+	}
+	fclose(vocabfile);
+
+	return 0;
+
 
     return 0;
 }
@@ -244,7 +302,8 @@ int main(int argc, char* argv[])
 	tasksMap["text2wngram"] = FLaMApp::tBuildNGrams;
 	tasksMap["text2idngram"] = FLaMApp::tBuildIDNGrams;
 
-	if ( tasksMap.find(task) == tasksMap.end() || !input_fname || !output_fname ) {
+	if ( tasksMap.find(task) == tasksMap.end() || !input_fname || !output_fname ||
+         (tasksMap[task] == FLaMApp::tBuildIDNGrams && !vocab) ) {
 		usage();
 		return EXIT_FAILURE;
 	}
@@ -252,7 +311,6 @@ int main(int argc, char* argv[])
 	FLaMApp app;
 
 	enum FLaMApp::TaskTypes taskType = tasksMap[task];
-
 	switch (taskType) {
 		case FLaMApp::tBuildNGrams:
 			cerr << "Building N-Grams file. Input file: " << input_fname << ", Output file: " << output_fname << endl;

@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# Create ID ngrams using vocabulary file and input stream.
+#
+
+# Model order
+N=3
+
+# Vocabulary file
+VOCABULARY=vocab
+
+export LC_ALL=C
+cat $* | \
+	./flamapp --task text2idngram -n ${N} --vocabulary ${VOCABULARY} | \
+	sort | \
+	uniq -c | sort -k1,1 -nr | \
+	tr -s ' ' | cut -c2- 
+	
