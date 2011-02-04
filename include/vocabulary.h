@@ -53,34 +53,6 @@ class Vocabulary
         virtual void addKey(const flmchar_t* key, uint32_t value=1) =0;
         virtual void inc(const flmchar_t* key, uint32_t value) =0;
         virtual uint32_t getValue(const flmchar_t* key) =0;
-
-    protected:
-        inline flmchar_t* _toKey(flmchar_t* key) {
-            flmchar_t*  _key = key;
-
-            // Lower case
-            for (flmchar_t* c=_key; *c != '\x0'; ++c) {
-                *c = tolower(*c);
-            }
-
-            return _key;
-        }
-
-        inline flmchar_t* _toKey(const flmchar_t* key) {
-            flmchar_t*  _key = NULL;
-
-            _key = (flmchar_t *)malloc(flmstrlen(key) + 1);
-            flmstrcpy(_key, key);
-
-            // Lower case
-            for (flmchar_t* c=_key; *c != '\x0'; ++c) {
-                *c = tolower(*c);
-            }
-
-            return _key;
-        }
-
-
 };
 
 class HashVocabulary : public Vocabulary
@@ -90,21 +62,31 @@ class HashVocabulary : public Vocabulary
 
     // Internal hash table representation for the symbol -> id mapping
     typedef std::hash_map<const flmchar_t*, uint32_t, hash<const flmchar_t*>, eqstr> SymbolMap;
+    typedef std::pair<const flmchar_t*, uint32_t> SymbolPair;
 
     HashVocabulary() : _hash(HashVocabulary::PREALLOC_HASH_SZ) {}
     ~HashVocabulary();
 
 
-    bool hasKey(const flmchar_t* key);
-    void addKey(const flmchar_t* key, uint32_t value=1);
-    inline void inc(const flmchar_t* key, uint32_t value) {
-        flmchar_t* _key = _toKey(key);
-        _hash[_key] += value;
+    inline void addKey(const flmchar_t* key, uint32_t value) {
+        if (!key)
+            return;
+        _hash.insert(SymbolPair(key, value));
     }
-    inline uint32_t getValue(const flmchar_t* key) {
-        flmchar_t* _key = _toKey(key);
 
-        SymbolMap::iterator it = _hash.find(_key);
+    inline bool hasKey(const flmchar_t* key) {
+        if ( _hash.find(key) == _hash.end() ) {
+            return false;
+        }
+        return true;
+    }
+
+    inline void inc(const flmchar_t* key, uint32_t value) {
+        _hash[key] += value;
+    }
+
+    inline uint32_t getValue(const flmchar_t* key) {
+        SymbolMap::iterator it = _hash.find(key);
         if ( it != _hash.end() )
             return it->second;
 

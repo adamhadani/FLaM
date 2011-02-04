@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Bash wrapper to create vocabulary
-# from word frequency count file.
+# from (sorted) word frequency count file.
 #
 #
 ###############################################################################
@@ -18,9 +18,6 @@ usage() {
 
 # Max terms in vocabulary
 MAX_TERMS=65535
-
-# key to sort by (e.g frequency column index)
-KEY=1
 
 log "Creating vocabulary from sorted wfreq file"
 

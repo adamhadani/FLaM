@@ -16,9 +16,11 @@
 
 #include <cxxtools/arg.h>
 
+#include "types.h"
 #include "stringtokenizer.h"
 #include "lineiterator.h"
 #include "vocabulary.h"
+#include "text_utils.h"
 
 
 using std::string;
@@ -73,12 +75,13 @@ int FLaMApp::buildWFreq(const char* input_fname, const char* output_fname)
 
 	Vocabulary* vocabulary = new HashVocabulary();
 
-	flmchar_t *line = lineiterator.next(), *tok=NULL;
+	flmchar_t *line = lineiterator.next(), *tok=NULL, *normalized_tok=NULL;
 	while (line) {
 		tokenizer.setString(line);
 		tok = tokenizer.next();
 		while (tok) {
-            vocabulary->inc(tok, 1);
+		    normalized_tok = lower_case(tok, true);
+            vocabulary->inc(normalized_tok, 1);
 
             tok = tokenizer.next();
 		}
@@ -208,9 +211,11 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, in
     HashVocabulary vocabulary;
     LineIterator v_lineiterator(vocabfile);
     flmchar_t* line = v_lineiterator.next();
+    flmchar_t* normalized_term = NULL;
 
     for (flmwid_t id=1; line != NULL; ++id) {
-        vocabulary.addKey(line, id);
+        normalized_term = lower_case(line, true);
+        vocabulary.addKey(normalized_term, id);
         line = v_lineiterator.next();
     }
 
