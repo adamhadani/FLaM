@@ -80,7 +80,7 @@ int FLaMApp::buildWFreq(const char* input_fname, const char* output_fname)
 		tokenizer.setString(line);
 		tok = tokenizer.next();
 		while (tok) {
-		    normalized_tok = lower_case(tok, true);
+		    normalized_tok = lower_case(tok);
             vocabulary->inc(normalized_tok, 1);
 
             tok = tokenizer.next();
@@ -210,11 +210,12 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, in
 
     HashVocabulary vocabulary;
     LineIterator v_lineiterator(vocabfile);
-    flmchar_t* line = v_lineiterator.next();
+
     flmchar_t* normalized_term = NULL;
+    flmchar_t* line = v_lineiterator.next();
 
     for (flmwid_t id=1; line != NULL; ++id) {
-        normalized_term = lower_case(line, true);
+        normalized_term = lower_case(line);
         vocabulary.addKey(normalized_term, id);
         line = v_lineiterator.next();
     }
@@ -225,7 +226,7 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, in
 
     int i,j,N,pos,m;
     int min_N=n, max_N=n;
-	flmchar_t* tok = NULL;
+	flmchar_t *tok=NULL, *normalized_tok=NULL;
 
 	std::vector<flmwid_t> ids;
     std::stringstream ngram;
@@ -240,7 +241,8 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, in
 		tokenizer.setString(line);
 		tok = tokenizer.next();
 		while ( tok != NULL ) {
-		    flmwid_t id = vocabulary.getValue(tok);
+		    normalized_tok = lower_case(tok, true);
+		    flmwid_t id = vocabulary.getValue(normalized_tok);
 		    ids.push_back(id);
             tok = tokenizer.next();
             ++N;

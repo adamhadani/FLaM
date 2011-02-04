@@ -3,11 +3,25 @@
 # Create ID ngrams using vocabulary file and input stream.
 #
 
+
+usage() {
+	printf "USAGE: $(basename $0) <vocabulary> < <input_file> > <output_file>\n" >&2
+	exit 1
+}
+
 # Model order
 N=3
 
 # Vocabulary file
 VOCABULARY=vocab
+
+if [ "$#" -lt 1 ];
+then
+	usage
+fi
+
+VOCABULARY=$1
+shift
 
 export LC_ALL=C
 cat $* | \
