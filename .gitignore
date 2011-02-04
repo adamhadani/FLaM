@@ -1,4 +1,5 @@
 *.cbp
 *.depend
 *.layout
+*.kdev4
 *.o
