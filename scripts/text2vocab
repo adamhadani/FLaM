@@ -31,7 +31,7 @@ fi
 log "Creating vocabulary and sorting. MAX_TERMS == ${MAX_TERMS}"
 
 cat $* | \
-	flamapp --task text2wfreq | \
+	./flamapp --task text2wfreq | \
 	LC_ALL=C sort -k1,1 -nr | \
 	awk -F"\t" '{print $2}' | \
 	head -n ${MAX_TERMS}

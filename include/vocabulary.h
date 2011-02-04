@@ -50,13 +50,19 @@ class Vocabulary
         virtual ~Vocabulary();
 
         virtual bool hasKey(const flmchar_t* key) =0;
-        virtual void addKey(const flmchar_t* key, uint32_t value=1) =0;
-        virtual void inc(const flmchar_t* key, uint32_t value) =0;
+        virtual void addKey(flmchar_t* key, uint32_t value=1) =0;
+        virtual void inc(flmchar_t* key, uint32_t value) =0;
 
     protected:
-        inline flmchar_t* _toKey(const flmchar_t* key) {
-            flmchar_t* _key = (flmchar_t *)malloc(flmstrlen(key) + 1);
-            flmstrcpy(_key, key);
+        inline flmchar_t* _toKey(flmchar_t* key, bool inplace=true) {
+            flmchar_t*  _key = NULL;
+
+            if (!inplace) {
+                _key = (flmchar_t *)malloc(flmstrlen(key) + 1);
+                flmstrcpy(_key, key);
+            } else {
+                _key = key;
+            }
 
             // Lower case
             for (flmchar_t* c=_key; *c != '\x0'; ++c) {
@@ -81,9 +87,9 @@ class HashVocabulary : public Vocabulary
 
 
     bool hasKey(const flmchar_t* key);
-    void addKey(const flmchar_t* key, uint32_t value=1);
-    inline void inc(const flmchar_t* key, uint32_t value) {
-        const flmchar_t* _key = _toKey(key);
+    void addKey(flmchar_t* key, uint32_t value=1);
+    inline void inc(flmchar_t* key, uint32_t value) {
+        flmchar_t* _key = _toKey(key);
         _hash[_key] += value;
     }
 
