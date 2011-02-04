@@ -13,16 +13,21 @@ log() {
 	printf "`date +%c` - $*\n" >&2
 }
 usage() {
-	printf "USAGE: $(basename $0) -m <max_terms> < infile > outfile\n" >&2
+	printf "USAGE: $(basename $0) <max_terms> < infile > outfile\n" >&2
 	exit 1
 }
 
 ###############################################################################
 
 # Max terms in vocabulary
-MAX_TERMS=300000
+MAX_TERMS=65535
 
-log "Creating vocabulary and sorting..."
+if [ "$#" -gt 0 ];
+then
+	MAX_TERMS=$1
+fi
+
+log "Creating vocabulary and sorting. MAX_TERMS == ${MAX_TERMS}"
 
 cat $* | \
 	flamapp --task text2wfreq | \
