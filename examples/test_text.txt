@@ -1,0 +1,7 @@
+onewordline
+nonsqueezed  spaces here  in this  line
+ this line starts with a space
+  this line starts with twospaces
+  this line starts with twospace and ends with one space 
+ this line starts with onespace and ends with two spaces  
+
