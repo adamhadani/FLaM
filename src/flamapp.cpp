@@ -43,8 +43,9 @@ class FLaMApp
 	virtual ~FLaMApp() {}
 
 	int buildNGrams(const char* input_fname, const char* output_fname, int n);
-	int buildIDNGrams(const char* input_fname, const char* output_fname, int n, const char* vocab);
+	int buildIDNGrams(const char* input_fname, const char* output_fname, int n, const char* vocab_fname);
 	int buildWFreq(const char* input_fname, const char* output_fname);
+	int buildLM(const char* idngram_fname, const char* vocab_fname, const char* output_fname);
 
   private:
     const size_t wordLenThres;
@@ -81,7 +82,20 @@ int FLaMApp::buildWFreq(const char* input_fname, const char* output_fname)
 		tok = tokenizer.next();
 		while (tok) {
 		    normalized_tok = lower_case(tok);
-            vocabulary->inc(normalized_tok, 1);
+
+		    if ( vocabulary->hasKey(normalized_tok) ) {
+                // term already exists in vocabulary,
+                // free up memory for current term
+                // and increase word frequency count
+		        vocabulary->inc(normalized_tok, 1);
+                delete normalized_tok;
+		    } else {
+		        // Add new key.
+		        // NOTE: this references the pointer,
+		        // so should not free up the memory
+		        // pointed to!
+                vocabulary->addKey(normalized_tok);
+		    }
 
             tok = tokenizer.next();
 		}
@@ -276,6 +290,15 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, in
 
 
     return 0;
+}
+
+/**
+ * Build language model
+ *
+ */
+int FLaMApp::buildLM(const char* idngram_fname, const char* vocab_fname, const char* output_fname)
+{
+
 }
 
 void usage()

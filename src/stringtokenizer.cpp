@@ -9,7 +9,8 @@
 
 using namespace FLaM;
 
-StringTokenizer::StringTokenizer(const flmchar_t* delim, const flmchar_t* s)
+StringTokenizer::StringTokenizer(const flmchar_t* delim, const flmchar_t* s) :
+    string(NULL)
 {
     this->delim = (char*)malloc(flmstrlen(delim) + 2);
     flmstrcpy(this->delim, delim);
@@ -28,6 +29,10 @@ StringTokenizer::~StringTokenizer()
 
 void StringTokenizer::setString(const flmchar_t* string)
 {
+    // Free up memory reserved by previous string if any
+    if (this->string)
+        free(this->string);
+
     this->string = (char*)malloc(flmstrlen(string) + 2);
     flmstrcpy(this->string, string);
 

@@ -19,7 +19,8 @@ LineIterator::LineIterator(FILE* infile)
 
 LineIterator::~LineIterator()
 {
-    delete buf;
+    if (buf)
+        delete buf;
 }
 
 void LineIterator::setFile(FILE* infile)
