@@ -10,7 +10,7 @@ log() {
 	printf "`date +%c` - $*\n" >&2
 }
 usage() {
-	printf "USAGE: $(basename $0) -m <max_terms> < infile > outfile\n" >&2
+	printf "USAGE: $(basename $0) [<max_terms>] < infile > outfile\n" >&2
 	exit 1
 }
 
@@ -19,7 +19,13 @@ usage() {
 # Max terms in vocabulary
 MAX_TERMS=65535
 
-log "Creating vocabulary from sorted wfreq file"
+if [ "$#" -gt 0 ];
+then
+    MAX_TERMS=$1
+    shift
+fi
+
+log "Creating vocabulary from sorted wfreq file. MAX_TERMS == ${MAX_TERMS}"
 
 cat $* | \
 	awk -F"\t" '{print $2}' | \
