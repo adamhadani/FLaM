@@ -28,5 +28,6 @@ cat $* | \
 	./flamapp --task text2idngram -n ${N} --vocabulary ${VOCABULARY} | \
 	sort | \
 	uniq -c | sort -k1,1 -nr | \
-	tr -s ' ' | cut -c2- 
+	tr -s ' ' | cut -c2- | \
+	perl -lne '@row = split(" ", $_); push(@row,shift(@row)); print join(" ",@row);'
 	
