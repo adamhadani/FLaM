@@ -22,7 +22,6 @@
 #include "vocabulary.h"
 #include "text_utils.h"
 
-
 using std::string;
 using std::vector;
 using std::map;
@@ -31,6 +30,7 @@ using std::cerr;
 using std::endl;
 
 using cxxtools::Arg;
+
 using namespace FLaM;
 
 class FLaMApp
@@ -42,10 +42,10 @@ class FLaMApp
 	FLaMApp(size_t wordLenThres=20) : wordLenThres(wordLenThres) {}
 	virtual ~FLaMApp() {}
 
-	int buildNGrams(const char* input_fname, const char* output_fname, int n);
-	int buildIDNGrams(const char* input_fname, const char* output_fname, int n, const char* vocab_fname);
+	int buildNGrams(const char* input_fname, const char* output_fname, size_t n);
+	int buildIDNGrams(const char* input_fname, const char* output_fname, size_t n, const char* vocab_fname);
 	int buildWFreq(const char* input_fname, const char* output_fname);
-	int buildLM(const char* idngram_fname, const char* vocab_fname, const char* output_fname);
+	int buildLM(const char* idngram_fname, const char* vocab_fname, const char* output_fname, size_t n);
 
   private:
     const size_t wordLenThres;
@@ -135,7 +135,7 @@ int FLaMApp::buildWFreq(const char* input_fname, const char* output_fname)
  * Emit all ngrams of order [min_N, max_N] from input text
  *
  */
-int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int n)
+int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, size_t n)
 {
 	FILE *infile=NULL, *outfile=NULL;
 	if ( !strcmp(input_fname, "-") ) {
@@ -203,7 +203,7 @@ int FLaMApp::buildNGrams(const char* input_fname, const char* output_fname, int 
 	return 0;
 }
 
-int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, int n, const char* vocab_fname)
+int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, size_t n, const char* vocab_fname)
 {
 	FILE *infile=NULL, *outfile=NULL, *vocabfile=NULL;
 	if ( !strcmp(input_fname, "-") ) {
@@ -278,6 +278,8 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, in
 		line = lineiterator.next();
 	}
 
+
+    // Close file handles
 	if ( infile != stdin ) {
 		fclose(infile);
 	}
@@ -293,12 +295,46 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, in
 }
 
 /**
- * Build language model
+ * Build language model based on vocabulary
+ * and (id) ngrams input stream
  *
  */
-int FLaMApp::buildLM(const char* idngram_fname, const char* vocab_fname, const char* output_fname)
+int FLaMApp::buildLM(const char* idngram_fname, const char* vocab_fname, const char* output_fname, size_t n)
 {
+	FILE *idngramfile=NULL, *outfile=NULL, *vocabfile=NULL;
+	if ( !strcmp(idngram_fname, "-") ) {
+		idngramfile = stdin;
+	}
+	else {
+		idngramfile = fopen(idngram_fname, "r");
+	}
+	if ( !strcmp(output_fname, "-") ) {
+		outfile = stdout;
+	}
+	else {
+		outfile = fopen(output_fname, "w");
+	}
+    vocabfile = fopen(vocab_fname, "r");
 
+    # Create the n-gram model tree from ngram data
+
+    LineIterator lineiterator(idngramfile);
+    StringTokenizer tokenizer;
+
+	line = lineiterator.next();
+	while (line) {
+        // Parse ngram id stream / counts
+	}
+
+
+    // Close file handles
+	if ( idngramfile != stdin ) {
+		fclose(idngramfile);
+	}
+	if ( outfile != stdout ) {
+		fclose(outfile);
+	}
+	fclose(vocabfile);
 }
 
 void usage()
