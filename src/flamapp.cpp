@@ -289,9 +289,6 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, si
 	fclose(vocabfile);
 
 	return 0;
-
-
-    return 0;
 }
 
 /**
@@ -335,6 +332,8 @@ int FLaMApp::buildLM(const char* idngram_fname, const char* vocab_fname, const c
 		fclose(outfile);
 	}
 	fclose(vocabfile);
+
+    return 0;
 }
 
 void usage()
