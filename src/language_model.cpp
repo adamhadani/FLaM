@@ -1,9 +1,13 @@
+/*
+ *
+ * Define the language model classes and functionality
+ *
+ * @author Adam Ever-Hadani <adamhadani@videosurf.com>
+ *
+ */
 #include "language_model.h"
 
-LanguageModel::LanguageModel()
-{
-    //ctor
-}
+using namespace FLaM;
 
 LanguageModel::~LanguageModel()
 {

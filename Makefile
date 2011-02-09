@@ -7,6 +7,9 @@ SRCS = \
 	$(SRCDIR)/stringtokenizer.cpp \
 	$(SRCDIR)/lineiterator.cpp \
 	$(SRCDIR)/vocabulary.cpp \
+	$(SRCDIR)/discounting.cpp \
+	$(SRCDIR)/language_model.cpp \
+	$(SRCDIR)/text_utils.cpp \
 	$(SRCDIR)/trie.cpp
 
 EXECUTABLES=flamapp

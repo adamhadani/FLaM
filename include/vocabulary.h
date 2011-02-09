@@ -96,6 +96,9 @@ class HashVocabulary : public Vocabulary
     inline SymbolMap::iterator begin() { return _hash.begin(); }
     inline SymbolMap::iterator end() { return _hash.end(); }
 
+    // Factory method to load vocabulary from file
+    static HashVocabulary* fromFile(FILE* vocabfile);
+
   private:
     SymbolMap _hash;
 };

@@ -17,6 +17,7 @@
 #include <cxxtools/arg.h>
 
 #include "types.h"
+#include "language_model.h"
 #include "stringtokenizer.h"
 #include "lineiterator.h"
 #include "vocabulary.h"
@@ -76,7 +77,9 @@ int FLaMApp::buildWFreq(const char* input_fname, const char* output_fname)
 
 	Vocabulary* vocabulary = new HashVocabulary();
 
-	flmchar_t *line = lineiterator.next(), *tok=NULL, *normalized_tok=NULL;
+	flmchar_t *line = lineiterator.next();
+	flmchar_t *tok=NULL, *normalized_tok=NULL;
+
 	while (line) {
 		tokenizer.setString(line);
 		tok = tokenizer.next();
@@ -220,19 +223,8 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, si
 	}
     vocabfile = fopen(vocab_fname, "r");
 
-	// Popoulate vocabulary ID mapping from file
-
-    HashVocabulary vocabulary;
-    LineIterator v_lineiterator(vocabfile);
-
-    flmchar_t* normalized_term = NULL;
-    flmchar_t* line = v_lineiterator.next();
-
-    for (flmwid_t id=1; line != NULL; ++id) {
-        normalized_term = lower_case(line);
-        vocabulary.addKey(normalized_term, id);
-        line = v_lineiterator.next();
-    }
+	// Populate vocabulary ID mapping from file
+    HashVocabulary* vocabulary = HashVocabulary::fromFile(vocabfile);
 
     // Generate ID NGrams from input stream
     StringTokenizer tokenizer;
@@ -246,7 +238,7 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, si
     std::stringstream ngram;
 
 	// For each line
-	line = lineiterator.next();
+	flmchar_t* line = lineiterator.next();
 	while (line) {
 	    ids.clear();
         N=0;
@@ -256,7 +248,7 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, si
 		tok = tokenizer.next();
 		while ( tok != NULL ) {
 		    normalized_tok = lower_case(tok, true);
-		    flmwid_t id = vocabulary.getValue(normalized_tok);
+		    flmwid_t id = vocabulary->getValue(normalized_tok);
 		    ids.push_back(id);
             tok = tokenizer.next();
             ++N;
@@ -278,6 +270,8 @@ int FLaMApp::buildIDNGrams(const char* input_fname, const char* output_fname, si
 		line = lineiterator.next();
 	}
 
+    // Free up memory
+    delete vocabulary;
 
     // Close file handles
 	if ( infile != stdin ) {
@@ -313,12 +307,16 @@ int FLaMApp::buildLM(const char* idngram_fname, const char* vocab_fname, const c
 	}
     vocabfile = fopen(vocab_fname, "r");
 
-    # Create the n-gram model tree from ngram data
+    Vocabulary* vocabulary = HashVocabulary::fromFile(vocabfile);
+
+    BackoffLanguageModel lm(n, vocabulary);
+
+    // Create the n-gram model tree from ngram data
 
     LineIterator lineiterator(idngramfile);
     StringTokenizer tokenizer;
 
-	line = lineiterator.next();
+	flmchar_t* line = lineiterator.next();
 	while (line) {
         // Parse ngram id stream / counts
 	}
