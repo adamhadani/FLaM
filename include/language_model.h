@@ -34,8 +34,24 @@ class LanguageModel
         // Model order (bigram, trigram..)
         const size_t n;
 
-        // Vocabulary. This typically holds the term <=> id mappings hash
+
+        // Vocabulary. Holds the term <=> id mappings
         Vocabulary* vocabulary;
+};
+
+class DiscountedLanguageModel : public LanguageModel
+{
+    public:
+        DiscountedLanguageModel(size_t, Vocabulary* vocabulary) : LanguageModel(n, vocabulary) {}
+        virtual ~DiscountedLanguageModel();
+
+    protected:
+
+        // frequency-of-frequency information. used in discounting.
+        unsigned int **freq_of_freq;
+
+        // Sizes of the freq_of_freq arrays
+        size_t *fof_sizes;
 };
 
 /**
@@ -44,10 +60,10 @@ class LanguageModel
  * for events.
  *
  */
-class InterpolatedLanguageModel : public LanguageModel
+class InterpolatedLanguageModel : public DiscountedLanguageModel
 {
     public:
-        InterpolatedLanguageModel();
+        InterpolatedLanguageModel(size_t n, Vocabulary* vocabulary) : DiscountedLanguageModel(n, vocabulary) {}
         ~InterpolatedLanguageModel();
 };
 
@@ -63,10 +79,10 @@ class InterpolatedLanguageModel : public LanguageModel
  * We use the popular Katz backoff method.
  *
  */
-class BackoffLanguageModel : public LanguageModel
+class BackoffLanguageModel : public DiscountedLanguageModel
 {
     public:
-        BackoffLanguageModel(size_t n, Vocabulary* vocabulary) : LanguageModel(n, vocabulary) {}
+        BackoffLanguageModel(size_t n, Vocabulary* vocabulary) : DiscountedLanguageModel(n, vocabulary) {}
         ~BackoffLanguageModel() {}
 
     protected:

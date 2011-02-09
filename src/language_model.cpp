@@ -13,3 +13,12 @@ LanguageModel::~LanguageModel()
 {
     //dtor
 }
+
+DiscountedLanguageModel::~DiscountedLanguageModel()
+{
+    // Free up resources used
+
+    if ( this->freq_of_freq ) {
+
+    }
+}

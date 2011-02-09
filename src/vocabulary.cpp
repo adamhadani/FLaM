@@ -10,7 +10,7 @@
 
 #include "vocabulary.h"
 #include "types.h"
-#include "text_utils.h"
+#include "utils.h"
 #include "lineiterator.h"
 
 using std::stringstream;

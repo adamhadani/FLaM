@@ -34,6 +34,14 @@ using std::wstring;
 #endif
 
 #define flmwid_t uint32_t
+#define flmcount_t uint32_t
+
+// Compact ngram representation used by framework
+struct flmngram_t {
+  unsigned short n;
+  flmwid_t  *id_array;
+  flmcount_t count;
+};
 
 // Function parameters decorators, optionally used to clarify
 #define IN
