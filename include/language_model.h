@@ -10,6 +10,7 @@
 
 #include "types.h"
 #include "vocabulary.h"
+#include "ngram_storage.h"
 
 namespace FLaM {
 
@@ -21,12 +22,15 @@ namespace FLaM {
 class LanguageModel
 {
     public:
-        LanguageModel(size_t n, Vocabulary* vocabulary) : n(n), vocabulary(vocabulary) {}
+        LanguageModel(size_t n, Vocabulary* vocabulary);
         virtual ~LanguageModel();
 
         inline size_t getOrder() const { return n; }
 
-        virtual void addNGram(const flmngram_t& ngram, flmcount_t count) =0;
+        virtual inline void addNGram(const flmngram_t& ngram) {
+            ngramStorage->addNGram(ngram);
+        }
+
         virtual void save(FILE* outfile) =0;
 
         //virtual float getCount(const flmwid_t*) const =0;
@@ -38,6 +42,9 @@ class LanguageModel
 
         // Vocabulary. Holds the term <=> id mappings
         Vocabulary* vocabulary;
+
+        // NGram storage
+        NGramStorage* ngramStorage;
 };
 
 /**

@@ -9,10 +9,22 @@
 
 using namespace FLaM;
 
+
+LanguageModel::LanguageModel(size_t n, Vocabulary* vocabulary) :
+    n(n), vocabulary(vocabulary), ngramStorage(NULL)
+{
+    // TODO: Move to constructor arg (IoC) or
+    // parameterize as template argument
+    ngramStorage = new TreeNGramStorage();
+}
+
 LanguageModel::~LanguageModel()
 {
     if (vocabulary)
         delete vocabulary;
+
+    if (ngramStorage)
+        delete ngramStorage;
 }
 
 DiscountedLanguageModel::~DiscountedLanguageModel()

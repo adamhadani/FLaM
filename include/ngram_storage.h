@@ -37,11 +37,11 @@ class NGramStorage
 class TreeNGramStorage : public NGramStorage
 {
     public:
-        TreeNGramStorage() {}
-        virtual ~TreeNGramStorage() {}
+        TreeNGramStorage();
+        virtual ~TreeNGramStorage();
 
-        const flmcount_t getNGramCount(const flmngram_t& ngram) const { return 0; }
-        void addNGram(const flmngram_t& ngram) {}
+        const flmcount_t getNGramCount(const flmngram_t& ngram) const;
+        void addNGram(const flmngram_t& ngram);
 };
 
 }

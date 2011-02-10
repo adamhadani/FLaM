@@ -326,7 +326,7 @@ int FLaMApp::buildLM(const char* idngram_fname, const char* vocab_fname, const c
         get_ngram(idngramfile, curr_ngram);
 
         // Add to model
-        //lm->add
+        lm->addNGram(curr_ngram);
     }
 
     // Calculate discounted counts
