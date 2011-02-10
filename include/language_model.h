@@ -26,6 +26,8 @@ class LanguageModel
 
         virtual inline size_t getOrder() const { return n; }
 
+        virtual void save(FILE* outfile) =0;
+
         //virtual float getCount(const flmwid_t*) const =0;
         //virtual float getProb(const flmwid_t*) const  =0;
 
@@ -84,6 +86,8 @@ class BackoffLanguageModel : public DiscountedLanguageModel
     public:
         BackoffLanguageModel(size_t n, Vocabulary* vocabulary) : DiscountedLanguageModel(n, vocabulary) {}
         ~BackoffLanguageModel() {}
+
+        virtual void save(FILE* outfile) {}
 
     protected:
 

@@ -320,8 +320,22 @@ int FLaMApp::buildLM(const char* idngram_fname, const char* vocab_fname, const c
 
     printf("Reading ngrams...\n");
     while ( !feof(idngramfile) ) {
+
+        // Read current ngram
         get_ngram(idngramfile, curr_ngram);
+
+        // Add to model
+        //lm->add
     }
+
+    // Calculate discounted counts
+
+    // Perform any additional smoothing
+
+    // Calculate backoff weights
+
+    // Write out to file
+    lm->save(outfile);
 
     // Free up resources
 
