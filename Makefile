@@ -9,6 +9,7 @@ SRCS = \
 	$(SRCDIR)/vocabulary.cpp \
 	$(SRCDIR)/discounting.cpp \
 	$(SRCDIR)/language_model.cpp \
+	$(SRCDIR)/ngram_storage.cpp \
 	$(SRCDIR)/utils.cpp \
 	$(SRCDIR)/trie.cpp
 

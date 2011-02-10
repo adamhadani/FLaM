@@ -11,7 +11,8 @@ using namespace FLaM;
 
 LanguageModel::~LanguageModel()
 {
-    //dtor
+    if (vocabulary)
+        delete vocabulary;
 }
 
 DiscountedLanguageModel::~DiscountedLanguageModel()
@@ -21,4 +22,12 @@ DiscountedLanguageModel::~DiscountedLanguageModel()
     if ( this->freq_of_freq ) {
 
     }
+}
+
+/**
+ * Add an (id) ngram with associated count to model.
+ *
+ */
+void DiscountedLanguageModel::addNGram(const flmngram_t& ngram, flmcount_t count) {
+
 }

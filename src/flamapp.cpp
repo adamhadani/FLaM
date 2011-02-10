@@ -17,6 +17,7 @@
 #include <cxxtools/arg.h>
 
 #include "types.h"
+#include "ngram_storage.h"
 #include "language_model.h"
 #include "stringtokenizer.h"
 #include "lineiterator.h"
@@ -338,6 +339,7 @@ int FLaMApp::buildLM(const char* idngram_fname, const char* vocab_fname, const c
     lm->save(outfile);
 
     // Free up resources
+    delete lm;
 
     // Close file handles
 	if ( idngramfile != stdin ) {
