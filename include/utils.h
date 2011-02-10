@@ -14,7 +14,7 @@
 
 flmchar_t* lower_case(flmchar_t* key, bool in_place=false);
 
-int get_ngram(FILE* ngram_fp, flmngram_t *ngram, bool ascii=true);
+int get_ngram(FILE* ngram_fp, flmngram_t& ngram, bool ascii=true);
 
 int quit(int rc, const char *msg, ...);
 

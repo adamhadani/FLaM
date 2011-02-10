@@ -307,13 +307,21 @@ int FLaMApp::buildLM(const char* idngram_fname, const char* vocab_fname, const c
 	}
     vocabfile = fopen(vocab_fname, "r");
 
+    printf("Reading vocabulary...\n");
     Vocabulary* vocabulary = HashVocabulary::fromFile(vocabfile);
 
     LanguageModel *lm = new BackoffLanguageModel(n, vocabulary);
 
     // Create the n-gram model tree from ngram data
 
-	size_t i=0;
+    flmngram_t curr_ngram;
+    curr_ngram.n = n;
+    curr_ngram.id_array = static_cast<flmwid_t *>(calloc(n, sizeof(flmwid_t)));
+
+    printf("Reading ngrams...\n");
+    while ( !feof(idngramfile) ) {
+        get_ngram(idngramfile, curr_ngram);
+    }
 
     // Free up resources
 

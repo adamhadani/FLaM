@@ -31,16 +31,17 @@ flmchar_t* lower_case(flmchar_t* key, bool in_place) {
 
 /**
  * Read in an idngram from file into ngram data structure
+ * NOTE: Assumes ngram data fields memory have been pre-allocated
  *
  */
-int get_ngram(FILE *id_ngram_fp, OUT flmngram_t *ng, bool ascii) {
+int get_ngram(FILE *id_ngram_fp, OUT flmngram_t& ng, bool ascii) {
 
     int i;
 
     if (ascii) {
         // Read in ngram ids
-        for (i=0; i < ng->n; ++i) {
-            if ( fscanf(id_ngram_fp, "%u", &ng->id_array[i]) != 1 ) {
+        for (i=0; i < ng.n; ++i) {
+            if ( fscanf(id_ngram_fp, "%u", &ng.id_array[i]) != 1 ) {
                 if (feof(id_ngram_fp)) {
                     // Reached end of file
                     return 0;
@@ -52,7 +53,7 @@ int get_ngram(FILE *id_ngram_fp, OUT flmngram_t *ng, bool ascii) {
         }
 
         // read in count
-        if ( fscanf(id_ngram_fp, "%d", &ng->count) != 1 ) {
+        if ( fscanf(id_ngram_fp, "%d", &ng.count) != 1 ) {
             if (feof(id_ngram_fp)) {
                 // Reached end of file
                 return 0;
