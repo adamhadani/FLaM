@@ -8,11 +8,9 @@
 #ifndef NGRAMSTORAGE_H
 #define NGRAMSTORAGE_H
 
-#include <set>
+#include <cstdint>
 
 #include "types.h"
-
-using std::set;
 
 namespace FLaM {
 
@@ -48,6 +46,14 @@ class TrieNGramStorage : public NGramStorage
         void addNGram(const flmngram_t& ngram);
 
     protected:
+
+    // Size for tables at each level of trie
+    uint32_t** table_sizes;
+
+    // Word Id Arrays, one per level of the trie
+    flmwid_t** word_id;
+
+
 
 
 
