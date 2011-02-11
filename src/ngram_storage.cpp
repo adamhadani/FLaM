@@ -46,5 +46,4 @@ const flmcount_t TrieNGramStorage::getNGramCount(const flmngram_t& ngram) const
  */
 void TrieNGramStorage::addNGram(const flmngram_t& ngram)
 {
-    TreeNGramNode* currNode = root;
 }
