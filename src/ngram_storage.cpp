@@ -5,6 +5,8 @@
  * @author Adam Ever-Hadani <adamhadani@videosurf.com>
  *
  */
+#include <algorithm>
+
 #include "ngram_storage.h"
 
 using namespace FLaM;
@@ -20,23 +22,29 @@ NGramStorage::~NGramStorage()
 }
 
 
-TreeNGramStorage::TreeNGramStorage()
+TrieNGramStorage::TrieNGramStorage()
+{
+}
+
+TrieNGramStorage::~TrieNGramStorage()
 {
 
 }
 
-TreeNGramStorage::~TreeNGramStorage()
-{
-
-}
-
-const flmcount_t TreeNGramStorage::getNGramCount(const flmngram_t& ngram) const
+const flmcount_t TrieNGramStorage::getNGramCount(const flmngram_t& ngram) const
 {
 
     return 0;
 }
 
-void TreeNGramStorage::addNGram(const flmngram_t& ngram)
+/**
+ * Add an ngram (with associated metadata e.g count) to tree structure.
+ * This function assumes no previous state and thus is less efficient
+ * for batch insertion. If pre-sorted input ngram data is available,
+ * addBatchNGrams should be used instead.
+ *
+ */
+void TrieNGramStorage::addNGram(const flmngram_t& ngram)
 {
-
+    TreeNGramNode* currNode = root;
 }

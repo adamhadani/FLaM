@@ -15,7 +15,7 @@ LanguageModel::LanguageModel(size_t n, Vocabulary* vocabulary) :
 {
     // TODO: Move to constructor arg (IoC) or
     // parameterize as template argument
-    ngramStorage = new TreeNGramStorage();
+    ngramStorage = new TrieNGramStorage();
 }
 
 LanguageModel::~LanguageModel()
