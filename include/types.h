@@ -33,8 +33,10 @@ using std::wstring;
  #define flmstrcmp w_strcmp
 #endif
 
+// Numeric type definitions
 #define flmwid_t uint32_t
 #define flmcount_t uint32_t
+#define flmprob_t float
 
 // Compact ngram representation used by framework
 struct flmngram_t {

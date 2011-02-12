@@ -27,11 +27,17 @@ class LanguageModel
 
         inline size_t getOrder() const { return n; }
 
-        virtual inline void addNGram(const flmngram_t& ngram) {
-            ngramStorage->addNGram(ngram);
-        }
+        // Get conditional word probabiltities with given history P(w_i | w_i-n+1 .. w_i-1)
+        virtual flmprob_t getWordProb(flmwid_t word, const flmwid_t *context) = 0;
+        virtual flmprob_t getWordProb(const flmchar_t* word, const flmwid_t *context);
+
+
+        // Get sentence probability
+        virtual flmprob_t sentenceProb(const flmwid_t *sentence, OUT TextStats &stats);
+        virtual flmprob_t sentenceProb(const flmchar_t* *sentence, OUT TextStats &stats);
 
         virtual void save(FILE* outfile) =0;
+        virtual void load(FILE* infile)  =0;
 
         //virtual float getCount(const flmwid_t*) const =0;
         //virtual float getProb(const flmwid_t*) const  =0;
