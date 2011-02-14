@@ -10,6 +10,7 @@
 
 #include "types.h"
 #include "vocabulary.h"
+#include "textstats.h"
 #include "ngram_storage.h"
 
 namespace FLaM {
@@ -118,10 +119,13 @@ class DiscountedLanguageModel : public LanguageModel
 class BackoffLanguageModel : public DiscountedLanguageModel
 {
     public:
-        BackoffLanguageModel(size_t n, Vocabulary* vocabulary) : DiscountedLanguageModel(n, vocabulary) {}
-        virtual ~BackoffLanguageModel() {}
+        BackoffLanguageModel(size_t n, Vocabulary* vocabulary);
+        virtual ~BackoffLanguageModel();
+
+        flmprob_t getWordProb(flmwid_t word, const flmwid_t *context);
 
         virtual void save(FILE* outfile) {}
+        virtual void load(FILE* infile) {}
 
     protected:
 

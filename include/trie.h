@@ -8,10 +8,13 @@
 #ifndef TRIE_H
 #define TRIE_H
 
+#include <cstdio>
+#include <cstdint>
+
 namespace FLaM {
 
 // Forward declerations
-template <typename triechar_t, typename trieval_t> class TrieIter;
+template <typename KeyT, typename ValueT> class TrieIter;
 
 /**
  * Implementation of a Trie
@@ -20,7 +23,7 @@ template <typename triechar_t, typename trieval_t> class TrieIter;
 template <typename KeyT, typename ValueT>
 class Trie
 {
-    friend class TrieIter;
+    friend class TrieIter<KeyT, ValueT>;
 
   public:
     Trie(size_t size=0);
@@ -42,7 +45,7 @@ class Trie
     size_t numEntries() const;
 
   private:
-    TrieNode<KeyT, ValueT>* root;
+    ValueT data;
 };
 
 }

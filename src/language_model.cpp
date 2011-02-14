@@ -27,6 +27,8 @@ LanguageModel::~LanguageModel()
         delete ngramStorage;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 DiscountedLanguageModel::~DiscountedLanguageModel()
 {
     // Free up resources used
@@ -41,5 +43,23 @@ DiscountedLanguageModel::~DiscountedLanguageModel()
  *
  */
 void DiscountedLanguageModel::addNGram(const flmngram_t& ngram, flmcount_t count) {
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+BackoffLanguageModel::BackoffLanguageModel(size_t n, Vocabulary* vocabulary) :
+    DiscountedLanguageModel(n, vocabulary)
+{
+
+}
+
+BackoffLanguageModel::~BackoffLanguageModel()
+{
+
+}
+
+flmprob_t BackoffLanguageModel::getWordProb(flmwid_t word, const flmwid_t *context)
+{
 
 }

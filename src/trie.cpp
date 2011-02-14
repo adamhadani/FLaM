@@ -9,14 +9,14 @@
 
 using namespace FLaM;
 
-template <typename K, typename V>
-Trie<K, V>::Trie()
+template <typename KeyT, typename ValueT>
+Trie<KeyT, ValueT>::Trie(size_t size)
 {
     //ctor
 }
 
-template <typename K, typename V>
-Trie <K, V>::~Trie()
+template <typename KeyT, typename ValueT>
+Trie <KeyT, ValueT>::~Trie()
 {
     //dtor
 }
