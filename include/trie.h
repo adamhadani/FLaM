@@ -10,6 +10,19 @@
 
 #include <cstdio>
 #include <cstdint>
+#ifdef __GNUC__
+  #include <ext/hash_map>
+  #include <ext/hash_set>
+#else
+  #include <hash_map>
+  #include <hash_set>
+#endif
+
+#define TRIE_INDEX_T std::hash_map
+
+namespace std { using namespace __gnu_cxx; }
+
+using std::hash_map;
 
 namespace FLaM {
 
@@ -45,9 +58,12 @@ class Trie
     size_t numEntries() const;
 
   private:
+    TRIE_INDEX_T<KeyT, ValueT > children;
     ValueT data;
 };
 
 }
+
+//#include "../src/trie.cpp"
 
 #endif // TRIE_H

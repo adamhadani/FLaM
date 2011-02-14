@@ -27,6 +27,21 @@ LanguageModel::~LanguageModel()
         delete ngramStorage;
 }
 
+flmprob_t LanguageModel::getWordProb(const flmchar_t* word, const flmwid_t *context)
+{
+    return 0.0f;
+}
+
+flmprob_t LanguageModel::sentenceProb(const flmwid_t *sentence, OUT TextStats &stats)
+{
+    return 0.0f;
+}
+
+flmprob_t LanguageModel::sentenceProb(const flmchar_t* *sentence, OUT TextStats &stats)
+{
+    return 0.0f;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 DiscountedLanguageModel::~DiscountedLanguageModel()
@@ -61,5 +76,5 @@ BackoffLanguageModel::~BackoffLanguageModel()
 
 flmprob_t BackoffLanguageModel::getWordProb(flmwid_t word, const flmwid_t *context)
 {
-
+    return 0.0f;
 }
