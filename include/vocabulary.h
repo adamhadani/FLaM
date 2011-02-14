@@ -55,6 +55,10 @@ class Vocabulary
         virtual uint32_t getValue(const flmchar_t* key) =0;
 };
 
+/**
+ * Hashtable-based vocabulary symbol/id mapping implementation
+ *
+ */
 class HashVocabulary : public Vocabulary
 {
   public:
@@ -103,6 +107,10 @@ class HashVocabulary : public Vocabulary
     SymbolMap _hash;
 };
 
+/**
+ * Trie-based vocabulary symbol/id mapping implementation
+ *
+ */
 class TrieVocabulary : public Vocabulary
 {
   private:

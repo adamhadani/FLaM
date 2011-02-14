@@ -11,6 +11,7 @@
 #include <cstdint>
 
 #include "types.h"
+#include "trie.h"
 
 namespace FLaM {
 
@@ -45,18 +46,22 @@ class TrieNGramStorage : public NGramStorage
         const flmcount_t getNGramCount(const flmngram_t& ngram) const;
         void addNGram(const flmngram_t& ngram);
 
+
+        // Terminal node (leaf) type
+        struct terminal_t {
+            // Word id
+            flmwid_t wid;
+            // Probability
+            flmprob_t prob;
+        };
+
+        struct node_t : terminal_t {
+            // Back-off weight associated with non-terminal nodes
+            float bow;
+        };
+
     protected:
-
-    // Size for tables at each level of trie
-    uint32_t** table_sizes;
-
-    // Word Id Arrays, one per level of the trie
-    flmwid_t** word_id;
-
-
-
-
-
+        Trie<flmwid_t, const node_t*> trie;
 
 };
 

@@ -10,49 +10,39 @@
 
 namespace FLaM {
 
-template <typename triechar_t, typename trieval_t>
-class Trie;
-
-/**
- * Represent a node in a Trie.
- *
- */
-template <typename triechar_t, typename trieval_t>
-class TrieNode
-{
-  friend class Trie<triechar_t, trieval_t>;
-
-  public:
-    TrieNode();
-    virtual ~TrieNode();
-
-    const trieval_t* getValue() const { return value; }
-
-  protected:
-    TrieNode* left;
-    TrieNode* right;
-
-    triechar_t key;
-    trieval_t* value;
-};
+// Forward declerations
+template <typename triechar_t, typename trieval_t> class TrieIter;
 
 /**
  * Implementation of a Trie
  *
  */
-template <typename triechar_t, typename trieval_t>
+template <typename KeyT, typename ValueT>
 class Trie
 {
-    public:
-        Trie();
-        virtual ~Trie();
+    friend class TrieIter;
 
-        void add(const triechar_t* key, trieval_t* value);
-        bool hasKey(const triechar_t* key);
-        trieval_t* get(const triechar_t* key);
+  public:
+    Trie(size_t size=0);
+    ~Trie();
 
-    private:
-        TrieNode<triechar_t, trieval_t>* root;
+    ValueT& value() { return data; }
+
+    ValueT* find(KeyT key) const;
+    ValueT* find(const KeyT* keys = 0) const;
+
+    ValueT* insert(KeyT key);
+    ValueT* insert(const KeyT* keys = 0);
+
+    ValueT* remove(KeyT key);
+    ValueT* remove(KeyT* keys = 0);
+
+    void clear();
+
+    size_t numEntries() const;
+
+  private:
+    TrieNode<KeyT, ValueT>* root;
 };
 
 }
