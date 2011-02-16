@@ -11,6 +11,10 @@
 
 using namespace FLaM;
 
+// Template instantiations
+#include "trie.cpp"
+INSTANTIATE_TRIE(flmwid_t, FLaM::TrieNGramStorage::node_t const*);
+
 NGramStorage::NGramStorage()
 {
     //ctor

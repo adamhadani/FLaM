@@ -36,10 +36,6 @@ using cxxtools::Arg;
 
 using namespace FLaM;
 
-#include "trie.cpp"
-
-INSTANTIATE_TRIE(flmwid_t, FLaM::TrieNGramStorage::node_t const*);
-
 class FLaMApp
 {
   public:
