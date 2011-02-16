@@ -17,6 +17,7 @@
 #include <cxxtools/arg.h>
 
 #include "types.h"
+#include "trie.h"
 #include "ngram_storage.h"
 #include "language_model.h"
 #include "stringtokenizer.h"
@@ -34,6 +35,10 @@ using std::endl;
 using cxxtools::Arg;
 
 using namespace FLaM;
+
+#include "trie.cpp"
+
+INSTANTIATE_TRIE(flmwid_t, FLaM::TrieNGramStorage::node_t const*);
 
 class FLaMApp
 {

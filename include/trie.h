@@ -44,18 +44,31 @@ class Trie
 
     ValueT& value() { return data; }
 
-    ValueT* find(KeyT key) const;
-    ValueT* find(const KeyT* keys = 0) const;
+    inline ValueT* find(KeyT key) {
+        Trie<KeyT, ValueT>* trie = (Trie<KeyT, ValueT> *)(findTrie(key));
+        return trie? &trie->data : 0;
+    }
+    //ValueT* find(const KeyT* keys = 0) const;
 
-    ValueT* insert(KeyT key);
-    ValueT* insert(const KeyT* keys = 0);
+    inline ValueT* insert(KeyT key) {
+        return &(insertTrie(key)->data);
+    }
+    //ValueT* insert(const KeyT* keys = 0);
 
-    ValueT* remove(KeyT key);
-    ValueT* remove(KeyT* keys = 0);
+    inline ValueT* remove(KeyT key) {
+        Trie<KeyT, ValueT>* trie = removeTrie(key);
+        return trie ? &trie->data : 0;
+    }
+    //ValueT* remove(KeyT* keys = 0);
 
-    void clear();
+    Trie<KeyT, ValueT>* findTrie(KeyT key);
+    Trie<KeyT, ValueT>* insertTrie(KeyT key);
+    Trie<KeyT, ValueT>* removeTrie(KeyT key);
 
-    size_t numEntries() const;
+
+    inline void clear() { children.clear(); }
+
+    size_t numEntries() const { return children.size(); }
 
   private:
     TRIE_INDEX_T<KeyT, ValueT > children;
@@ -64,6 +77,5 @@ class Trie
 
 }
 
-//#include "../src/trie.cpp"
 
 #endif // TRIE_H
